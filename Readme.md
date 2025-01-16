@@ -9,7 +9,7 @@ O projeto consiste em capturar dados de artistas e seus álbuns no site Discogs 
 # Mapeamento 📜
 O primeiro passo foi realizar uma pesquisa para entender a estrutura do site e como funcionam as requisições. Cheguei à página de documentação da API **https://www.discogs.com/developers/#**.
 
-Durante o desenvolvimento, encontrei um erro ao tentar utilizar o import requests, que foi corrigido ao atualizar o Python para a versão 3.12. Após estudar as bibliotecas necessárias, percebi a necessidade de gerar um token de acesso no próprio site, após efetuar o login, acessando essa página **https://www.discogs.com/pt_BR/settings/developers**.
+Durante o desenvolvimento, encontrei um erro ao tentar utilizar o import requests, que foi corrigido ao atualizar o Python para a versão 3.12. Após a API, percebi a necessidade de gerar um token de acesso no próprio site, após efetuar o login, acessando essa página **https://www.discogs.com/pt_BR/settings/developers**.
 
 # Construção ✨
 
@@ -29,21 +29,21 @@ O projeto tem como objetivo realizar uma requisição para capturar dados sobre:
 * Estilos do álbum
 
 
-A requisição é feita de maneira estruturada, com blocos separados para captura e alocação dos dados, organizados por ID's retornados em formato JSON. O uso de **time_sleep** foi implementado para evitar o erro 429, que ocorre quando as requisições são feitas em um curto período de tempo.
+A requisição é feita de maneira estruturada, com blocos separados para captura e alocação dos dados, organizados por ID's retornados em formato JSON. O uso de **time_sleep** foi implementado para evitar o **erro 429 (Timeout)**, que ocorre quando as requisições são feitas em um curto período de tempo.
 
 # Execução do final_file.py 🔥
 
 Neste arquivo, a estrutura foi organizada para facilitar a visualização e compreensão do projeto. Os dados são capturados em blocos distintos, com tratamento de erros utilizando try e except para evitar excessos de if/elif/else.
 
-Os artistas estão previamente definidos nas listas, e, para alterá-los, será necessário modificar as listas e as referências no código. Para melhor dinâmica, os 10 artistas foram divididos em 3 listas de execução.
+Os artistas estão previamente definidos nas listas, e, para alterá-los, será necessário modificar as listas e as referências no código.
 
 # Para executar o código final_file:✨
 
-Abra o arquivo na sua IDE ou execute o código diretamente no terminal com o comando:
+Abra o arquivo na sua IDE (VScode) e clique em "run", ou execute o código diretamente no terminal com o comando:
 
 **python final_file.py**
 
-O script retornará um arquivo JSON com todos os dados solicitados.
+O script irá gerar um arquivo JSON com todos os dados solicitados.
 Caso ocorram erros relacionados aos imports, verifique se as bibliotecas estão instaladas. Se necessário, instale-as com o comando:
 **pip3 install requests**
 
@@ -54,9 +54,9 @@ Neste arquivo, a estrutura é semelhante ao código anterior, mas foi implementa
 **Para executar o código:**
 Execute o script passando o nome de um ou mais artistas como argumento:
 
-*python teste-argparse.py "Nirvana"*, (ou qualquer artista de sua preferência).
+*python teste-argparse.py "Nirvana"* ou *python teste-argparse.py "Nirvana","Nickelbak, "Dua Lipa"*
 
-O código retornará um arquivo JSON com os dados dos artistas consultados, permitindo que a API faça a busca com base nos parâmetros fornecidos.
+O código irá gerar um arquivo JSON com os dados dos artistas consultados, permitindo que a API faça a busca com base nos parâmetros fornecidos.
 
 # Exemplo de retorno em Json:
 
@@ -65,7 +65,7 @@ O código retornará um arquivo JSON com os dados dos artistas consultados, perm
 
 # Importante: Verifique se as bibliotecas necessárias estão instaladas ⚠️ 
 
-Nesse projeto não foi necessária a utilização do **requirements.txt**, apenas com as lib obtive um bom resultado junto a API.
+Nesse projeto não foi necessária um arquivo com as dependencias conhecido como **requirements.txt** , por apenas precisar da lib **requests*.
 
 
 
