@@ -8,11 +8,11 @@ API_KEY = "KbugxmSGcxDYaHpBtdAkNCuEPbeclKcdrlhoDIfy"
 
 
 def search_artist(name):
-    """Procurando por artistas baseados nos nomes ."""
+    """Procurando por artistas baseados nos nomes."""
     url = "https://api.discogs.com/database/search"
     params = {"q": name, "type": "artist", "token": API_KEY}
     response = requests.get(url, params=params)
-    time.sleep(10)  # Delay between artist requests
+    time.sleep(1)  # Delay reduzido para 1 segundo
     if response.status_code == 200:
         results = response.json().get("results", [])
         return results[0] if results else None
@@ -23,35 +23,35 @@ def artist_details(artist_id):
     """Capturando detalhes dos artistas/ID."""
     url = f"https://api.discogs.com/artists/{artist_id}"
     response = requests.get(url)
-    time.sleep(10)  # Delay para evitar erro 429
+    time.sleep(1)  # Delay reduzido para 1 segundo
     if response.status_code == 200:
         return response.json()
     print(f"Error fetching artist details: {response.status_code}")
     return None
 
 def search_albums(artist_id):
-    """Procura por 3 albuns mais recentes do artista."""
+    """Procura por 3 álbuns mais recentes do artista."""
     url = f"https://api.discogs.com/artists/{artist_id}/releases"
     params = {"sort": "year", "sort_order": "desc", "per_page": 3, "page": 1}
     response = requests.get(url, params=params)
-    time.sleep(15)  # Dalay para evitar excesso de requisição novamente
+    time.sleep(2)  # Delay reduzido para 2 segundos
     if response.status_code == 200:
         return response.json().get("releases", [])
     print(f"Error searching for albums: {response.status_code}")
     return []
 
 def album_details(release_id):
-    """Captura de detalhes dos albuns."""
+    """Captura de detalhes dos álbuns."""
     url = f"https://api.discogs.com/releases/{release_id}"
     response = requests.get(url)
-    time.sleep(15)  # Delay 
+    time.sleep(2)  # Delay reduzido para 2 segundos
     if response.status_code == 200:
         return response.json()
     print(f"Error fetching album details: {response.status_code}")
     return None
 
 def collect_data(artists):
-    """Dados de multiolos artistas com tratamento de dado skippando não encontrados."""
+    """Dados de múltiplos artistas com tratamento de dado skippando não encontrados."""
     data = {}
     for artist in artists:
         try:
@@ -93,7 +93,7 @@ def collect_data(artists):
                     print(f"Error fetching details for album '{album.get('title')}': {e}")
                 
                 # Outro Delay
-                time.sleep(15)
+                time.sleep(2)  # Delay reduzido para 2 segundos
 
             data[artist] = {
                 "Artist Name": details.get("name"),
@@ -106,7 +106,7 @@ def collect_data(artists):
             print(f"Error fetching information for artist '{artist}': {e}")
         
         # Delay
-        time.sleep(20)
+        time.sleep(3)  # Delay reduzido para 3 segundos
     
     return data
 
