@@ -2,15 +2,15 @@ import requests
 import json
 import time
 
-# Chave Discorgs 
+# Chave Discogs
 API_KEY = "KbugxmSGcxDYaHpBtdAkNCuEPbeclKcdrlhoDIfy"
 
 def search_artist(name):
-    """Pegando nome de artistas declarados """
+    """Pegando nome de artistas declarados."""
     url = "https://api.discogs.com/database/search"
     params = {"q": name, "type": "artist", "token": API_KEY}
     response = requests.get(url, params=params)
-    time.sleep(5)  # Delay between artist requests
+    time.sleep(1)  # Delay reduzido para 1 segundo
     if response.status_code == 200:
         results = response.json().get("results", [])
         return results[0] if results else None
@@ -21,35 +21,35 @@ def artist_details(artist_id):
     """Pegando detalhes de artistas pelo ID."""
     url = f"https://api.discogs.com/artists/{artist_id}"
     response = requests.get(url)
-    time.sleep(5)  # Delay after getting artist details
+    time.sleep(1)  # Delay reduzido para 1 segundo
     if response.status_code == 200:
         return response.json()
     print(f"Error fetching artist details: {response.status_code}")
     return None
 
 def search_albums(artist_id):
-    """Procurando pelos 3 ultimos albuns lançados ."""
+    """Procurando pelos 3 últimos álbuns lançados."""
     url = f"https://api.discogs.com/artists/{artist_id}/releases"
     params = {"sort": "year", "sort_order": "desc", "per_page": 3, "page": 1}
     response = requests.get(url, params=params)
-    time.sleep(5)  # Delay
+    time.sleep(1)  # Delay reduzido para 1 segundo
     if response.status_code == 200:
         return response.json().get("releases", [])
     print(f"Error searching for albums: {response.status_code}")
     return []
 
 def album_details(release_id):
-    """Detalhes dos albuns."""
+    """Detalhes dos álbuns."""
     url = f"https://api.discogs.com/releases/{release_id}"
     response = requests.get(url)
-    time.sleep(5)  # Delay 
+    time.sleep(1)  # Delay reduzido para 1 segundo
     if response.status_code == 200:
         return response.json()
     print(f"Error fetching album details: {response.status_code}")
     return None
 
 def collect_data(artists):
-    """Coletando informações artistas, caso não encontre, skippa ."""
+    """Coletando informações dos artistas. Se não encontrar, pula."""
     data = {}
     for artist in artists:
         try:
@@ -86,8 +86,8 @@ def collect_data(artists):
                 except Exception as e:
                     print(f"Error fetching details for album '{album.get('title')}': {e}")
                 
-                # Delay
-                time.sleep(10)
+                # Delay reduzido
+                time.sleep(1)
 
             data[artist] = {
                 "Artist Name": details.get("name"),
@@ -98,31 +98,30 @@ def collect_data(artists):
         except Exception as e:
             print(f"Error fetching information for artist '{artist}': {e}")
         
-        # Delay
-        time.sleep(15)
+        # Delay reduzido
+        time.sleep(2)
     
     return data
 
 def save_to_json(data, file):
-    """Salvando no Json"""
+    """Salvando no JSON."""
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
     print(f"Data saved to {file}")
 
-# Por questão de volume, foi separado em 3 listas para captura 
-artists_list_part1 = ["Nirvana", "The Beatles", "Radiohead"]
-artists_list_part2 = ["Linkin Park", "Led Zeppelin", "Metallica"]
-artists_list_part3 = ["Pearl Jam", "Green Day", "Aerosmith", "My Chemical Romance"]
+# Lista única de artistas.
+artists_list = [
+    "Nirvana", "The Beatles", "Radiohead", "Linkin Park", 
+    "Led Zeppelin", "Metallica", "Pearl Jam", "Green Day", 
+    "Aerosmith", "My Chemical Romance"
+]
 
-all_data = {}  # Jogando para somente um arquivo
+all_data = {}  # Para armazenar todos os dados
 
-# Indexando em grupos 
-for idx, group in enumerate([artists_list_part1, artists_list_part2, artists_list_part3], start=1):
-    print(f"Starting collection for group {idx}...")
-    collected_data = collect_data(group)
-    all_data.update(collected_data)  # Mesclando todos os grupos 
-    print(f"Collection for group {idx} complete!")
-    time.sleep(20)  # Delay
+print("Starting data collection...")
+collected_data = collect_data(artists_list)
+all_data.update(collected_data)  # Adicionando os dados coletados
+print("Data collection complete!")
 
 save_to_json(all_data, "complete_data.json")
 print("Data collection completed and saved!")
